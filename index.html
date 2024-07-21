@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        ul { list-style-type: none; padding: 0; }
+        li { padding: 8px; margin-bottom: 5px; background: #f4f4f4; }
+        input { padding: 10px; width: 70%; }
+        button { padding: 10px; }    </style>
+</head>
+<body>
+  <h3>Hii safura i need to chat to u urgently this will be confidentail please dont panic all masseges will be auto cleared after chat please chat using below window if u didnt get respose immediatly please keep on visiting site please
+  </h3>
+    <ul id="messages"></ul>
+    <input id="message" autocomplete="off" /><button id="send">Send</button>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        const messagesList = document.getElementById('messages');
+
+        // Function to add a message to the chat
+        function addMessage(msg) {
+            const item = document.createElement('li');
+            item.textContent = msg;
+            messagesList.appendChild(item);
+        }
+
+        // Load existing messages when connected
+        socket.on('load messages', function(messages) {
+            messages.forEach(message => {
+                addMessage(message.content);
+            });
+        });
+
+        // Handle sending messages
+        document.getElementById('send').addEventListener('click', function() {
+            const input = document.getElementById('message');
+            const msg = input.value.trim();
+            if (msg !== '') {
+                socket.emit('chat message', msg);
+                input.value = '';
+            }
+        });
+
+        // Handle receiving messages
+        socket.on('chat message', function(message) {
+            addMessage(message.content);
+        });
+    </script>
+</body>
+</html>
