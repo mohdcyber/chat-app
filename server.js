@@ -32,7 +32,7 @@ try {
 
 // Function to remove expired messages older than 3 minutes
 function removeExpiredMessages() {
-  const expiryTime = 3 * 60 * 1000; // 3 minutes in milliseconds
+const expiryTime = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
   const currentTime = Date.now();
 
   messages = messages.filter(message => (currentTime - message.timestamp) <= expiryTime);
